@@ -1,0 +1,21 @@
+PARSER_BEGIN(Test)
+
+public class Test {
+    public static void main(String args[]) throws ParseException{
+        Test obj = new Test(System.in);
+        obj.input();
+    }
+ }
+ PARSER_END(Test)
+    void brackets():
+    {}
+    {
+        "{"[brackets()]"}"
+    }
+    void input():
+    {}
+    {
+        brackets() <EOF>
+    }
+
+
