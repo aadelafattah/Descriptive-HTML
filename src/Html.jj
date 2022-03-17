@@ -7,12 +7,15 @@ public class Html {
     }
 }
 PARSER_END(Html)
-TOKEN : {<quote :"“">}
-TOKEN : {<alphanumeric : (["0" - "9", "A" - "Z", "a" - "z", "/", ":", "."])*>}
+void input():
+{}
+{
+    create() <EOF>
+}
 void create():
 {}
 {
-    element()
+   "ADD" element()
 }
 void element():
 {}
@@ -24,7 +27,7 @@ void element():
 void img():
 {}
 {
-    "IMAGE" "WITH" "SOURCE"<quote><alphanumeric><quote>
+    "IMAGE" "WITH" "SOURCE"<quote>sentence()<quote>
 }
 void header():
 {}
@@ -45,7 +48,7 @@ void url():
 void decoratedText():
 {}
 {
-     text() | color() | font() "AND" decoratedText()
+     decoratedText() "AND" decoratedText() | text() | color() | font()
 }
 void decoratedUrl():
 {}
@@ -56,22 +59,25 @@ void decoratedUrl():
 void text():
 {}
 {
-    "WITH" "TEXT" <quote> <alphanumeric> <quote>
+    "WITH" "TEXT" <quote>sentence()<quote>
 }
 void color():
 {}
 {
-    "WITH" "COLOR" <quote> <alphanumeric> <quote>
+    "WITH" "COLOR" <quote>sentence()<quote>
 }
 
 void font():
 {}
 {
-    "WITH" "FONT" <quote> <alphanumeric> <quote>
+    "WITH" "FONT" <quote>sentence()<quote>
 }
 
-void input():
+TOKEN : {<quote :"“">}
+TOKEN : {<alphanumeric : ["0" - "9", "A" - "Z", "a" - "z", "/", ":", "."]>}
+TOKEN : {<epsilon : "">}
+void sentence():
 {}
 {
-    create() <EOF>
+    <alphanumeric> sentence() | <epsilon>
 }
