@@ -1,0 +1,77 @@
+PARSER_BEGIN(Html)
+
+public class Html {
+    public static void main(String[] args){
+      Html obj = new Html(System.in);
+      obj.input();
+    }
+}
+PARSER_END(Html)
+TOKEN : {<quote :"“">}
+TOKEN : {<alphanumeric : (["0" - "9", "A" - "Z", "a" - "z", "/", ":", "."])*>}
+void create():
+{}
+{
+    element()
+}
+void element():
+{}
+{
+    img() | header() | para() | url()
+}
+
+
+void img():
+{}
+{
+    "IMAGE" "WITH" "SOURCE"<quote><alphanumeric><quote>
+}
+void header():
+{}
+{
+    "HEADING" decoratedText()
+}
+void para():
+{}
+{
+    "PARAGRAPH" decoratedText()
+}
+void url():
+{}
+{
+    "LINK" decoratedUrl()
+}
+
+void decoratedText():
+{}
+{
+     text() | color() | font() "AND" decoratedText()
+}
+void decoratedUrl():
+{}
+{
+    "WITH" "Link" decoratedText()
+}
+
+void text():
+{}
+{
+    "WITH" "TEXT" <quote> <alphanumeric> <quote>
+}
+void color():
+{}
+{
+    "WITH" "COLOR" <quote> <alphanumeric> <quote>
+}
+
+void font():
+{}
+{
+    "WITH" "FONT" <quote> <alphanumeric> <quote>
+}
+
+void input():
+{}
+{
+    create() <EOF>
+}
